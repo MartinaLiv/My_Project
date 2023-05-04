@@ -1,6 +1,74 @@
 ---
-title: "Dogs are better than cats"
+title: "Grumpy cats"
 author: "Martina Livornese"
 output: html_document
 date: "2023-05-02"
 ---
+
+#Titolo Principale
+
+##Titolo Secondario
+
+[Eurasian Lynx - Wikipedia](https://en.wikipedia.org/wiki/Eurasian_lynx)
+
+<center>
+![Grumpy cat](Figure/Grumpy_cat.jpg){height=300px}
+<-- Commento -->
+
+</center>
+
+Lista dei gatti meno affettuosi:
+
+1. Blu di Russia
+2. British Shorthair
+3. British Longhair
+
+```{r}
+big.cats <- read.table("data/Wikipedia_LargestCats.txt", header = T, sep="\t")
+big.cats
+
+```
+
+```{r, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+
+big.cats <- big.cats %>% 
+  separate(Weight.range.kg, into=c("Weight.min", "Weight.max"), sep = "-", remove = T) %>%
+  mutate(Weight.min=as.numeric(Weight.min), 
+         Weight.max=as.numeric(Weight.max)) %>% 
+  mutate(Common.name=factor(Common.name, levels=big.cats$Common.name))
+```
+
+Il gatto avente il massimo peso corporeo è `r big.cats[1, "Common.name"]`, il quale pesa fino a `r big.cats[1, "Maximum.weight.kg"]`
+
+```{r, fig.height=3, fig.width= 5, fig.cap="Weight (kg) of the 10 largest wild cats", fig.align="center", dpi=150, echo=F}
+
+library(cats)
+ggcats <- ggplot(data=big.cats) + 
+  cats::add_cat() + ## add a random cat image on the background of the graph, if you fancy
+  geom_segment(aes(y=Common.name, yend=Common.name, x=Weight.min, xend=Weight.max), 
+               arrow = arrow(length = unit(5, "points"), 
+                             ends="both", type = "closed", angle = 40)) + 
+  ylab(NULL) +
+  xlab(NULL) + 
+  theme(axis.text = element_text(size=14))
+ggcats
+```
+#Lavorare con tabelle
+```{r, warning=FALSE, message=FALSE}
+#stampate in console 
+head(big.cats[1:4, 1:5])
+
+knitr::kable(head(big.cats[1:4,1:5]), caption="The largest cats!")
+
+library(kableExtra)
+knitr::kable(big.cats, caption="The largest cats!") %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
+    position = "center")
+```
+
+
+
+
