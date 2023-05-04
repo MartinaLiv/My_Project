@@ -31,6 +31,10 @@ dat <- dat$data  %>%
 ```
 
 ```{r}
-
+ggpant <- ggplot(data= dat, aes(x= country))+
+  geom_bar(fill= "magenta")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+  
+ggpant
 ```
 
