@@ -1,0 +1,36 @@
+---
+title: "Big cat with no ROAR!"
+author: "Martina Livornese"
+date: "2023-05-04"
+output: html_document
+---
+The snow leopard (Panthera uncia), also known commonly as the ounce, is a species of large cat in the genus Panthera of the family Felidae. 
+Here a fun fact abount Snow leopard! Unlike other big cats, snow leopards can't roar. Snow leopards have a 'main' call described as a 'piercing yowl' that's so loud it can be heard over the roar of a river.
+
+<center>
+![Snow leopard](Figure/snow-leopard-leopard-panthera-uncia-cat.jpg)
+</center>
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(rgbif)
+myspecies <- "Panthera uncia"  ## example
+get.speciesKey <- function(x){name_backbone(x)$speciesKey} #get GBIF species key
+key <- get.speciesKey(myspecies)
+# extract the first n occurrences from rgbif
+get.occurrences <- function(x, n=100){occ_search(taxonKey=x, return="data", 
+                                             limit=n, hasCoordinate = T)}
+
+occ <- get.occurrences(key)
+
+# clean data
+dat <- lapply(key, get.occurrences, n=100)[[1]]
+dat <- dat$data  %>%  
+  dplyr::select(species, year:day, country, stateProvince, 
+                decimalLongitude, decimalLatitude)#, everything())
+```
+
+```{r}
+
+```
+
