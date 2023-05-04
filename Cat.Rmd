@@ -4,11 +4,15 @@ author: "Martina Livornese"
 date: "2023-05-04"
 output: html_document
 ---
+# The Snow Leopard
+
 The snow leopard (Panthera uncia), also known commonly as the ounce, is a species of large cat in the genus Panthera of the family Felidae. 
+
+
 Here a fun fact abount Snow leopard! Unlike other big cats, snow leopards can't roar. Snow leopards have a 'main' call described as a 'piercing yowl' that's so loud it can be heard over the roar of a river.
 
 <center>
-![Snow leopard](Figure/snow-leopard-leopard-panthera-uncia-cat.jpg)
+![Snow leopard](Figure/snow-leopard-1990543__340.jpg)
 </center>
 
 ```{r, warning=FALSE, message=FALSE}
@@ -21,20 +25,27 @@ key <- get.speciesKey(myspecies)
 get.occurrences <- function(x, n=100){occ_search(taxonKey=x, return="data", 
                                              limit=n, hasCoordinate = T)}
 
-occ <- get.occurrences(key)
-
 # clean data
 dat <- lapply(key, get.occurrences, n=100)[[1]]
 dat <- dat$data  %>%  
   dplyr::select(species, year:day, country, stateProvince, 
                 decimalLongitude, decimalLatitude)#, everything())
+
 ```
 
-```{r}
+### Number of occurrences per country
+
+```{r, echo=F}
 ggpant <- ggplot(data= dat, aes(x= country))+
   geom_bar(fill= "magenta")+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
   
 ggpant
 ```
+
+This is all, now go back to work!
+
+<center>
+![](Figure/stupid.jpg)
+</center>
 
